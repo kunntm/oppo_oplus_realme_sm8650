@@ -194,7 +194,7 @@ jobs:
             # 尝试最多 3 次获取 KernelSU API 版本号
             for i in {1..3}; do
               # 从远程 Kbuild 中提取 KSU_API_VERSION
-              KSU_API_VERSION=$(curl -s "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/builtin/kernel/Kbuild" | 
+              KSU_API_VERSION=$(curl -s "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/bbuiltin/kernel/Kbuild" | 
                 # 查找第一个包含版本定义的行
                 grep -m1 "KSU_VERSION_API :=" | 
                 # 提取等号后的值
@@ -204,8 +204,8 @@ jobs:
               # 如果成功获取到版本号则跳出循环，否则等待 1 秒后重试
               [ -n "$KSU_API_VERSION" ] && break || sleep 1
             done
-            # 如果获取失败，使用默认版本号 3.2.0
-            [ -z "$KSU_API_VERSION" ] && KSU_API_VERSION="3.2.0"
+            # 如果获取失败，使用默认版本号 3.1.8
+            [ -z "$KSU_API_VERSION" ] && KSU_API_VERSION="3.1.8"
             # 将 API 版本号存储到 GitHub 环境变量
             echo "KSU_API_VERSION=$KSU_API_VERSION" >> $GITHUB_ENV
             # 创建版本定义模板&版本格式函数: 使用获取的提交哈希和固定后缀
@@ -733,7 +733,7 @@ jobs:
           if [[ ${{ github.event.inputs.kpm_enable }} == 'builtin' && ( "${{ github.event.inputs.ksu_type }}" == "sukisu" || "${{ github.event.inputs.ksu_type }}" == "resukisu" ) ]]; then
             echo "正在应用KPM并修补内核..."
             cd kernel_workspace/common/out/arch/arm64/boot
-            curl -LO https://github.com/SukiSU-Ultra/SukiSU_KernelPatch_patch/releases/download/0.11.4/patch_linux
+            curl -LO https://github.com/SukiSU-Ultra/SukiSU_KernelPatch_patch/releases/download/0.12.1/patch_linux
             chmod +x patch_linux
             ./patch_linux
             rm -f Image
